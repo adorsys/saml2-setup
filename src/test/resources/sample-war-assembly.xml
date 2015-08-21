@@ -1,0 +1,33 @@
+<assembly>
+  <id>war</id>
+  <formats>
+    <format>war</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <files>
+    <file>
+      <source>src/test/resources/beans.xml</source>
+      <outputDirectory>WEB-INF</outputDirectory>
+    </file>
+    <file>
+      <source>src/test/resources/web.xml</source>
+      <outputDirectory>WEB-INF</outputDirectory>
+    </file>
+    <file>
+      <source>src/test/resources/jboss-web.xml</source>
+      <outputDirectory>WEB-INF</outputDirectory>
+    </file>
+    <file>
+      <source>src/test/resources/picketlink.xml</source>
+      <outputDirectory>WEB-INF</outputDirectory>
+    </file>
+    <file>
+      <source>src/main/webapp/META-INF/jboss-deployment-structure.xml</source>
+      <outputDirectory>META-INF</outputDirectory>
+    </file>
+    <file>
+      <source>${project.build.directory}/test-classes/de/adorsys/sample/SimpleServlet.class</source>
+      <outputDirectory>WEB-INF/classes/de/adorsys/sample</outputDirectory>
+    </file>
+  </files>
+</assembly>

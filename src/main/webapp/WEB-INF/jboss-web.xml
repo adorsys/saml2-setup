@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
-    <security-domain>sample</security-domain>
-    <context-root>sample</context-root>
+    <context-root>idp</context-root>
+    <security-domain>idp</security-domain>
     <valve>
-        <class-name>org.picketlink.identity.federation.bindings.tomcat.sp.ServiceProviderAuthenticator</class-name>
+        <class-name>org.picketlink.identity.federation.bindings.tomcat.idp.IDPWebBrowserSSOValve</class-name>
     </valve>
 </jboss-web>

@@ -38,14 +38,25 @@ import javax.xml.transform.stream.StreamSource;
 @RunWith(Arquillian.class)
 public class TestSaml {
 
-    @Deployment
-    public static Archive createDeployment() {
+    @Deployment(name = "idp")
+    public static Archive createIdpDeployment() {
+
+        return ShrinkWrap.create(WebArchive.class, "idp.war")
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"))
+                .addAsManifestResource(new File("src/main/webapp/META-INF/jboss-deployment-structure.xml"))
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/jboss-web.xml"))
+                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/picketlink.xml"))
+                ;
+    }
+
+    @Deployment(name = "sample")
+    public static Archive createSamlDeployment() {
 
         return ShrinkWrap.create(WebArchive.class, "sample.war")
-                .addPackages(true, "de.adorsys.sample")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/beans.xml"), "beans.xml")
-                .addAsWebInfResource(new File("src/main/webapp/WEB-INF/web.xml"), "web.xml")
-                .addAsManifestResource(new File("src/main/webapp/META-INF/jboss-deployment-structure.xml"), "jboss-deployment-structure.xml")
+                .addClass("de.adorsys.sample.SimpleServlet")
+                .addAsWebInfResource("beans.xml")
+                .addAsWebInfResource("web.xml")
+                .addAsManifestResource(new File("src/main/webapp/META-INF/jboss-deployment-structure.xml"))
                 .addAsWebInfResource("jboss-web.xml")
                 .addAsWebInfResource("picketlink.xml")
                 ;
@@ -54,7 +65,7 @@ public class TestSaml {
     @Test @RunAsClient
     public void testServlet() throws Exception {
 
-        URL url = new URL("http://localhost:8080/test/hello");
+        URL url = new URL("http://localhost:8080/sample/hello");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setInstanceFollowRedirects(false);
@@ -87,7 +98,8 @@ public class TestSaml {
 
         // 3. some kind of post ... return 404 and javascript in body
         if (statusCode != 404) {
-            System.out.println("404 expected from " + connection.getURL());
+            System.out.printf("%d - 404 expected from %s%n", statusCode, connection.getURL());
+            return;
         }
 
         InputStream is = connection.getErrorStream();
